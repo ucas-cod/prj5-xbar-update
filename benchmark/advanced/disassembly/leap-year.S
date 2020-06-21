@@ -1,249 +1,210 @@
 
-/home/changyisong/ucas-cod/prj3-teacher-cyx/benchmark/advanced/bin/leap-year:     file format elf32-littlemips
+/home/changyisong/ucas-cod/prj5-riscv-cpu-teacher/benchmark/advanced/bin/leap-year:     file format elf32-littleriscv
 
 
 Disassembly of section .text:
 
 00000000 <start>:
-   0:	241d4000 	li	sp,16384
-   4:	08000004 	j	10 <continued>
-   8:	00000000 	nop
+   0:	00004137          	lui	sp,0x4
+   4:	00c0006f          	j	10 <continued>
+   8:	00000013          	nop
 
 0000000c <global_result>:
-   c:	ffffffff 	sdc3	$31,-1(ra)
+   c:	ffff                	0xffff
+   e:	ffff                	0xffff
 
 00000010 <continued>:
-  10:	0c000033 	jal	cc <main>
-  14:	00000000 	nop
-  18:	0c000015 	jal	54 <hit_good_trap>
-  1c:	00000000 	nop
+  10:	098000ef          	jal	ra,a8 <main>
+  14:	028000ef          	jal	ra,3c <hit_good_trap>
 
-00000020 <_halt>:
-  20:	3c020000 	lui	v0,0x0
-  24:	ac44000c 	sw	a0,12(v0)
-  28:	1000ffff 	b	28 <_halt+0x8>
-  2c:	00000000 	nop
+00000018 <_halt>:
+  18:	000007b7          	lui	a5,0x0
+  1c:	00a7a623          	sw	a0,12(a5) # c <global_result>
+  20:	0000006f          	j	20 <_halt+0x8>
 
-00000030 <nemu_assert>:
-  30:	14800006 	bnez	a0,4c <nemu_assert+0x1c>
-  34:	00000000 	nop
-  38:	24030001 	li	v1,1
-  3c:	3c020000 	lui	v0,0x0
-  40:	ac43000c 	sw	v1,12(v0)
-  44:	1000ffff 	b	44 <nemu_assert+0x14>
-  48:	00000000 	nop
-  4c:	03e00008 	jr	ra
-  50:	00000000 	nop
+00000024 <nemu_assert>:
+  24:	00051a63          	bnez	a0,38 <nemu_assert+0x14>
+  28:	000007b7          	lui	a5,0x0
+  2c:	00100713          	li	a4,1
+  30:	00e7a623          	sw	a4,12(a5) # c <global_result>
+  34:	0000006f          	j	34 <nemu_assert+0x10>
+  38:	00008067          	ret
 
-00000054 <hit_good_trap>:
-  54:	3c020000 	lui	v0,0x0
-  58:	ac40000c 	sw	zero,12(v0)
-  5c:	1000ffff 	b	5c <hit_good_trap+0x8>
-  60:	00000000 	nop
+0000003c <hit_good_trap>:
+  3c:	000007b7          	lui	a5,0x0
+  40:	0007a623          	sw	zero,12(a5) # c <global_result>
+  44:	0000006f          	j	44 <hit_good_trap+0x8>
 
-00000064 <is_leap_year>:
-  64:	28820004 	slti	v0,a0,4
-  68:	00801825 	move	v1,a0
-  6c:	30850003 	andi	a1,a0,0x3
-  70:	00a2180a 	movz	v1,a1,v0
-  74:	1460000f 	bnez	v1,b4 <is_leap_year+0x50>
-  78:	00000000 	nop
-  7c:	28830064 	slti	v1,a0,100
-  80:	00801025 	move	v0,a0
-  84:	14600005 	bnez	v1,9c <is_leap_year+0x38>
-  88:	00000000 	nop
-  8c:	2442ff9c 	addiu	v0,v0,-100
-  90:	28430064 	slti	v1,v0,100
-  94:	1060fffd 	beqz	v1,8c <is_leap_year+0x28>
-  98:	00000000 	nop
-  9c:	10400005 	beqz	v0,b4 <is_leap_year+0x50>
-  a0:	00000000 	nop
-  a4:	24020001 	li	v0,1
-  a8:	03e00008 	jr	ra
-  ac:	00000000 	nop
-  b0:	2484fe70 	addiu	a0,a0,-400
-  b4:	28820190 	slti	v0,a0,400
-  b8:	1040fffd 	beqz	v0,b0 <is_leap_year+0x4c>
-  bc:	00000000 	nop
-  c0:	2c820001 	sltiu	v0,a0,1
-  c4:	03e00008 	jr	ra
-  c8:	00000000 	nop
+00000048 <is_leap_year>:
+  48:	00300713          	li	a4,3
+  4c:	00050793          	mv	a5,a0
+  50:	04a75863          	bge	a4,a0,a0 <is_leap_year+0x58>
+  54:	00357713          	andi	a4,a0,3
+  58:	02071263          	bnez	a4,7c <is_leap_year+0x34>
+  5c:	06300713          	li	a4,99
+  60:	02f75c63          	bge	a4,a5,98 <is_leap_year+0x50>
+  64:	00078713          	mv	a4,a5
+  68:	06300693          	li	a3,99
+  6c:	f9c70713          	addi	a4,a4,-100
+  70:	fee6cee3          	blt	a3,a4,6c <is_leap_year+0x24>
+  74:	00100513          	li	a0,1
+  78:	00071e63          	bnez	a4,94 <is_leap_year+0x4c>
+  7c:	18f00693          	li	a3,399
+  80:	18f00713          	li	a4,399
+  84:	00f6d663          	bge	a3,a5,90 <is_leap_year+0x48>
+  88:	e7078793          	addi	a5,a5,-400
+  8c:	fef74ee3          	blt	a4,a5,88 <is_leap_year+0x40>
+  90:	0017b513          	seqz	a0,a5
+  94:	00008067          	ret
+  98:	00078713          	mv	a4,a5
+  9c:	fd9ff06f          	j	74 <is_leap_year+0x2c>
+  a0:	00050713          	mv	a4,a0
+  a4:	fb5ff06f          	j	58 <is_leap_year+0x10>
 
 Disassembly of section .text.startup:
 
-000000cc <main>:
-  cc:	27bdffe8 	addiu	sp,sp,-24
-  d0:	3c060000 	lui	a2,0x0
-  d4:	24c601b0 	addiu	a2,a2,432
-  d8:	afbf0014 	sw	ra,20(sp)
-  dc:	2405075e 	li	a1,1886
-  e0:	240707db 	li	a3,2011
-  e4:	30a20003 	andi	v0,a1,0x3
-  e8:	24a40004 	addiu	a0,a1,4
-  ec:	14400017 	bnez	v0,14c <main+0x80>
-  f0:	00000000 	nop
-  f4:	00801025 	move	v0,a0
-  f8:	2442ff9c 	addiu	v0,v0,-100
-  fc:	28430064 	slti	v1,v0,100
- 100:	1060fffd 	beqz	v1,f8 <main+0x2c>
- 104:	00000000 	nop
- 108:	10400010 	beqz	v0,14c <main+0x80>
- 10c:	00000000 	nop
- 110:	8cc20000 	lw	v0,0(a2)
- 114:	24040001 	li	a0,1
- 118:	00442026 	xor	a0,v0,a0
- 11c:	2c840001 	sltiu	a0,a0,1
- 120:	24a50001 	addiu	a1,a1,1
- 124:	0c00000c 	jal	30 <nemu_assert>
- 128:	00000000 	nop
- 12c:	24c60004 	addiu	a2,a2,4
- 130:	14a7ffec 	bne	a1,a3,e4 <main+0x18>
- 134:	00000000 	nop
- 138:	8fbf0014 	lw	ra,20(sp)
- 13c:	00001025 	move	v0,zero
- 140:	27bd0018 	addiu	sp,sp,24
- 144:	03e00008 	jr	ra
- 148:	00000000 	nop
- 14c:	2484fe70 	addiu	a0,a0,-400
- 150:	28820190 	slti	v0,a0,400
- 154:	1040fffd 	beqz	v0,14c <main+0x80>
- 158:	00000000 	nop
- 15c:	8cc20000 	lw	v0,0(a2)
- 160:	2c840001 	sltiu	a0,a0,1
- 164:	00442026 	xor	a0,v0,a0
- 168:	2c840001 	sltiu	a0,a0,1
- 16c:	24a50001 	addiu	a1,a1,1
- 170:	0c00000c 	jal	30 <nemu_assert>
- 174:	00000000 	nop
- 178:	24c60004 	addiu	a2,a2,4
- 17c:	14a7ffd9 	bne	a1,a3,e4 <main+0x18>
- 180:	00000000 	nop
- 184:	8fbf0014 	lw	ra,20(sp)
- 188:	00001025 	move	v0,zero
- 18c:	27bd0018 	addiu	sp,sp,24
- 190:	03e00008 	jr	ra
- 194:	00000000 	nop
-
-Disassembly of section .MIPS.abiflags:
-
-00000198 <.MIPS.abiflags>:
- 198:	01200000 	0x1200000
- 19c:	01000101 	0x1000101
-	...
- 1a8:	00000001 	movf	zero,zero,$fcc0
- 1ac:	00000000 	nop
+000000a8 <main>:
+  a8:	fe010113          	addi	sp,sp,-32 # 3fe0 <ans+0x3e9c>
+  ac:	01312623          	sw	s3,12(sp)
+  b0:	00812c23          	sw	s0,24(sp)
+  b4:	00912a23          	sw	s1,20(sp)
+  b8:	01212823          	sw	s2,16(sp)
+  bc:	01412423          	sw	s4,8(sp)
+  c0:	00112e23          	sw	ra,28(sp)
+  c4:	14400993          	li	s3,324
+  c8:	75e00493          	li	s1,1886
+  cc:	18f00413          	li	s0,399
+  d0:	06300913          	li	s2,99
+  d4:	7db00a13          	li	s4,2011
+  d8:	0034f713          	andi	a4,s1,3
+  dc:	00448793          	addi	a5,s1,4
+  e0:	00071c63          	bnez	a4,f8 <main+0x50>
+  e4:	00078713          	mv	a4,a5
+  e8:	f9c70713          	addi	a4,a4,-100
+  ec:	fee94ee3          	blt	s2,a4,e8 <main+0x40>
+  f0:	00100693          	li	a3,1
+  f4:	00071863          	bnez	a4,104 <main+0x5c>
+  f8:	e7078793          	addi	a5,a5,-400
+  fc:	fef44ee3          	blt	s0,a5,f8 <main+0x50>
+ 100:	0017b693          	seqz	a3,a5
+ 104:	0009a503          	lw	a0,0(s3)
+ 108:	00148493          	addi	s1,s1,1
+ 10c:	00498993          	addi	s3,s3,4
+ 110:	40d50533          	sub	a0,a0,a3
+ 114:	00153513          	seqz	a0,a0
+ 118:	f0dff0ef          	jal	ra,24 <nemu_assert>
+ 11c:	fb449ee3          	bne	s1,s4,d8 <main+0x30>
+ 120:	01c12083          	lw	ra,28(sp)
+ 124:	01812403          	lw	s0,24(sp)
+ 128:	01412483          	lw	s1,20(sp)
+ 12c:	01012903          	lw	s2,16(sp)
+ 130:	00c12983          	lw	s3,12(sp)
+ 134:	00812a03          	lw	s4,8(sp)
+ 138:	00000513          	li	a0,0
+ 13c:	02010113          	addi	sp,sp,32
+ 140:	00008067          	ret
 
 Disassembly of section .data:
 
-000001b0 <ans>:
+00000144 <ans>:
 	...
- 1b8:	00000001 	movf	zero,zero,$fcc0
+ 14c:	0001                	nop
 	...
- 1c8:	00000001 	movf	zero,zero,$fcc0
+ 15a:	0000                	unimp
+ 15c:	0001                	nop
 	...
- 1e8:	00000001 	movf	zero,zero,$fcc0
+ 17a:	0000                	unimp
+ 17c:	0001                	nop
 	...
- 1f8:	00000001 	movf	zero,zero,$fcc0
+ 18a:	0000                	unimp
+ 18c:	0001                	nop
 	...
- 208:	00000001 	movf	zero,zero,$fcc0
+ 19a:	0000                	unimp
+ 19c:	0001                	nop
 	...
- 218:	00000001 	movf	zero,zero,$fcc0
+ 1aa:	0000                	unimp
+ 1ac:	0001                	nop
 	...
- 228:	00000001 	movf	zero,zero,$fcc0
+ 1ba:	0000                	unimp
+ 1bc:	0001                	nop
 	...
- 238:	00000001 	movf	zero,zero,$fcc0
+ 1ca:	0000                	unimp
+ 1cc:	0001                	nop
 	...
- 248:	00000001 	movf	zero,zero,$fcc0
+ 1da:	0000                	unimp
+ 1dc:	0001                	nop
 	...
- 258:	00000001 	movf	zero,zero,$fcc0
+ 1ea:	0000                	unimp
+ 1ec:	0001                	nop
 	...
- 268:	00000001 	movf	zero,zero,$fcc0
+ 1fa:	0000                	unimp
+ 1fc:	0001                	nop
 	...
- 278:	00000001 	movf	zero,zero,$fcc0
+ 20a:	0000                	unimp
+ 20c:	0001                	nop
 	...
- 288:	00000001 	movf	zero,zero,$fcc0
+ 21a:	0000                	unimp
+ 21c:	0001                	nop
 	...
- 298:	00000001 	movf	zero,zero,$fcc0
+ 22a:	0000                	unimp
+ 22c:	0001                	nop
 	...
- 2a8:	00000001 	movf	zero,zero,$fcc0
+ 23a:	0000                	unimp
+ 23c:	0001                	nop
 	...
- 2b8:	00000001 	movf	zero,zero,$fcc0
+ 24a:	0000                	unimp
+ 24c:	0001                	nop
 	...
- 2c8:	00000001 	movf	zero,zero,$fcc0
+ 25a:	0000                	unimp
+ 25c:	0001                	nop
 	...
- 2d8:	00000001 	movf	zero,zero,$fcc0
+ 26a:	0000                	unimp
+ 26c:	0001                	nop
 	...
- 2e8:	00000001 	movf	zero,zero,$fcc0
+ 27a:	0000                	unimp
+ 27c:	0001                	nop
 	...
- 2f8:	00000001 	movf	zero,zero,$fcc0
+ 28a:	0000                	unimp
+ 28c:	0001                	nop
 	...
- 308:	00000001 	movf	zero,zero,$fcc0
+ 29a:	0000                	unimp
+ 29c:	0001                	nop
 	...
- 318:	00000001 	movf	zero,zero,$fcc0
+ 2aa:	0000                	unimp
+ 2ac:	0001                	nop
 	...
- 328:	00000001 	movf	zero,zero,$fcc0
+ 2ba:	0000                	unimp
+ 2bc:	0001                	nop
 	...
- 338:	00000001 	movf	zero,zero,$fcc0
+ 2ca:	0000                	unimp
+ 2cc:	0001                	nop
 	...
- 348:	00000001 	movf	zero,zero,$fcc0
+ 2da:	0000                	unimp
+ 2dc:	0001                	nop
 	...
- 358:	00000001 	movf	zero,zero,$fcc0
+ 2ea:	0000                	unimp
+ 2ec:	0001                	nop
 	...
- 368:	00000001 	movf	zero,zero,$fcc0
+ 2fa:	0000                	unimp
+ 2fc:	0001                	nop
 	...
- 378:	00000001 	movf	zero,zero,$fcc0
+ 30a:	0000                	unimp
+ 30c:	0001                	nop
 	...
- 388:	00000001 	movf	zero,zero,$fcc0
+ 31a:	0000                	unimp
+ 31c:	0001                	nop
 	...
- 398:	00000001 	movf	zero,zero,$fcc0
+ 32a:	0000                	unimp
+ 32c:	0001                	nop
 	...
-
-Disassembly of section .reginfo:
-
-00000000 <.reginfo>:
-   0:	a0000000 	sb	zero,0(zero)
-	...
-
-Disassembly of section .pdr:
-
-00000000 <.pdr>:
-   0:	00000020 	add	zero,zero,zero
-	...
-  18:	0000001d 	0x1d
-  1c:	0000001f 	0x1f
-  20:	00000030 	tge	zero,zero
-	...
-  38:	0000001d 	0x1d
-  3c:	0000001f 	0x1f
-  40:	00000054 	0x54
-	...
-  58:	0000001d 	0x1d
-  5c:	0000001f 	0x1f
-  60:	00000064 	0x64
-	...
-  78:	0000001d 	0x1d
-  7c:	0000001f 	0x1f
-  80:	000000cc 	syscall	0x3
-  84:	80000000 	lb	zero,0(zero)
-  88:	fffffffc 	sdc3	$31,-4(ra)
-	...
-  94:	00000018 	mult	zero,zero
-  98:	0000001d 	0x1d
-  9c:	0000001f 	0x1f
-
-Disassembly of section .gnu.attributes:
-
-00000000 <.gnu.attributes>:
-   0:	00000f41 	0xf41
-   4:	756e6700 	jalx	5b99c00 <ans+0x5b99a50>
-   8:	00070100 	sll	zero,a3,0x4
-   c:	01040000 	0x1040000
 
 Disassembly of section .comment:
 
 00000000 <.comment>:
-   0:	3a434347 	xori	v1,s2,0x4347
-   4:	4e472820 	c3	0x472820
-   8:	36202955 	ori	zero,s1,0x2955
-   c:	302e322e 	andi	t6,at,0x322e
+   0:	3a434347          	fmsub.d	ft6,ft6,ft4,ft7,rmm
+   4:	2820                	fld	fs0,80(s0)
+   6:	29554e47          	fmsub.s	ft8,fa0,fs5,ft5,rmm
+   a:	3820                	fld	fs0,112(s0)
+   c:	322e                	fld	ft4,232(sp)
+   e:	302e                	fld	ft0,232(sp)
 	...
