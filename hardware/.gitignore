@@ -1,0 +1,8 @@
+#
+# Generated temporary files
+#
+
+vivado_prj/
+vivado_out/dcp/
+vivado_out/rtl_chk/
+vivado_out/sim/
