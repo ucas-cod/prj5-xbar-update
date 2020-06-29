@@ -1,225 +1,166 @@
 
-/home/changyisong/ucas-cod/prj3-teacher-cyx/benchmark/advanced/bin/shuixianhua:     file format elf32-littlemips
+/home/changyisong/ucas-cod/prj5-riscv-cpu-teacher/benchmark/advanced/bin/shuixianhua:     file format elf32-littleriscv
 
 
 Disassembly of section .text:
 
 00000000 <start>:
-   0:	241d4000 	li	sp,16384
-   4:	08000004 	j	10 <continued>
-   8:	00000000 	nop
+   0:	00004137          	lui	sp,0x4
+   4:	00c0006f          	j	10 <continued>
+   8:	00000013          	nop
 
 0000000c <global_result>:
-   c:	ffffffff 	sdc3	$31,-1(ra)
+   c:	ffff                	0xffff
+   e:	ffff                	0xffff
 
 00000010 <continued>:
-  10:	0c000043 	jal	10c <main>
-  14:	00000000 	nop
-  18:	0c000015 	jal	54 <hit_good_trap>
-  1c:	00000000 	nop
+  10:	0c4000ef          	jal	ra,d4 <main>
+  14:	028000ef          	jal	ra,3c <hit_good_trap>
 
-00000020 <_halt>:
-  20:	3c020000 	lui	v0,0x0
-  24:	ac44000c 	sw	a0,12(v0)
-  28:	1000ffff 	b	28 <_halt+0x8>
-  2c:	00000000 	nop
+00000018 <_halt>:
+  18:	000007b7          	lui	a5,0x0
+  1c:	00a7a623          	sw	a0,12(a5) # c <global_result>
+  20:	0000006f          	j	20 <_halt+0x8>
 
-00000030 <nemu_assert>:
-  30:	14800006 	bnez	a0,4c <nemu_assert+0x1c>
-  34:	00000000 	nop
-  38:	24030001 	li	v1,1
-  3c:	3c020000 	lui	v0,0x0
-  40:	ac43000c 	sw	v1,12(v0)
-  44:	1000ffff 	b	44 <nemu_assert+0x14>
-  48:	00000000 	nop
-  4c:	03e00008 	jr	ra
-  50:	00000000 	nop
+00000024 <nemu_assert>:
+  24:	00051a63          	bnez	a0,38 <nemu_assert+0x14>
+  28:	000007b7          	lui	a5,0x0
+  2c:	00100713          	li	a4,1
+  30:	00e7a623          	sw	a4,12(a5) # c <global_result>
+  34:	0000006f          	j	34 <nemu_assert+0x10>
+  38:	00008067          	ret
 
-00000054 <hit_good_trap>:
-  54:	3c020000 	lui	v0,0x0
-  58:	ac40000c 	sw	zero,12(v0)
-  5c:	1000ffff 	b	5c <hit_good_trap+0x8>
-  60:	00000000 	nop
+0000003c <hit_good_trap>:
+  3c:	000007b7          	lui	a5,0x0
+  40:	0007a623          	sw	zero,12(a5) # c <global_result>
+  44:	0000006f          	j	44 <hit_good_trap+0x8>
 
-00000064 <cube>:
-  64:	28850000 	slti	a1,a0,0
-  68:	00041023 	negu	v0,a0
-  6c:	0085100a 	movz	v0,a0,a1
-  70:	0004502a 	slt	t2,zero,a0
-  74:	00402825 	move	a1,v0
-  78:	24030001 	li	v1,1
-  7c:	2402ffff 	li	v0,-1
-  80:	006a100b 	movn	v0,v1,t2
-  84:	00405025 	move	t2,v0
-  88:	00a03025 	move	a2,a1
-  8c:	00003825 	move	a3,zero
-  90:	00001025 	move	v0,zero
-  94:	24090020 	li	t1,32
-  98:	30c30001 	andi	v1,a2,0x1
-  9c:	00444004 	sllv	t0,a0,v0
-  a0:	24420001 	addiu	v0,v0,1
-  a4:	10600002 	beqz	v1,b0 <cube+0x4c>
-  a8:	00000000 	nop
-  ac:	00e83821 	addu	a3,a3,t0
-  b0:	00063043 	sra	a2,a2,0x1
-  b4:	1449fff8 	bne	v0,t1,98 <cube+0x34>
-  b8:	00000000 	nop
-  bc:	00071023 	negu	v0,a3
-  c0:	39430001 	xori	v1,t2,0x1
-  c4:	0043380b 	movn	a3,v0,v1
-  c8:	00004025 	move	t0,zero
-  cc:	00001825 	move	v1,zero
-  d0:	24020020 	li	v0,32
-  d4:	30a40001 	andi	a0,a1,0x1
-  d8:	00673004 	sllv	a2,a3,v1
-  dc:	24630001 	addiu	v1,v1,1
-  e0:	10800002 	beqz	a0,ec <cube+0x88>
-  e4:	00000000 	nop
-  e8:	01064021 	addu	t0,t0,a2
-  ec:	00052843 	sra	a1,a1,0x1
-  f0:	1462fff8 	bne	v1,v0,d4 <cube+0x70>
-  f4:	00000000 	nop
-  f8:	00081023 	negu	v0,t0
-  fc:	394a0001 	xori	t2,t2,0x1
- 100:	010a100a 	movz	v0,t0,t2
- 104:	03e00008 	jr	ra
- 108:	00000000 	nop
+00000048 <cube>:
+  48:	00100313          	li	t1,1
+  4c:	00a04463          	bgtz	a0,54 <cube+0xc>
+  50:	fff00313          	li	t1,-1
+  54:	41f55793          	srai	a5,a0,0x1f
+  58:	00a7c6b3          	xor	a3,a5,a0
+  5c:	40f686b3          	sub	a3,a3,a5
+  60:	00068613          	mv	a2,a3
+  64:	00000593          	li	a1,0
+  68:	00000793          	li	a5,0
+  6c:	02000893          	li	a7,32
+  70:	00167713          	andi	a4,a2,1
+  74:	00f51833          	sll	a6,a0,a5
+  78:	00178793          	addi	a5,a5,1
+  7c:	00070463          	beqz	a4,84 <cube+0x3c>
+  80:	010585b3          	add	a1,a1,a6
+  84:	40165613          	srai	a2,a2,0x1
+  88:	ff1794e3          	bne	a5,a7,70 <cube+0x28>
+  8c:	00100793          	li	a5,1
+  90:	00f30463          	beq	t1,a5,98 <cube+0x50>
+  94:	40b005b3          	neg	a1,a1
+  98:	00000513          	li	a0,0
+  9c:	00000793          	li	a5,0
+  a0:	02000813          	li	a6,32
+  a4:	0016f713          	andi	a4,a3,1
+  a8:	00f59633          	sll	a2,a1,a5
+  ac:	00178793          	addi	a5,a5,1
+  b0:	00070463          	beqz	a4,b8 <cube+0x70>
+  b4:	00c50533          	add	a0,a0,a2
+  b8:	4016d693          	srai	a3,a3,0x1
+  bc:	ff0794e3          	bne	a5,a6,a4 <cube+0x5c>
+  c0:	00100793          	li	a5,1
+  c4:	00f31463          	bne	t1,a5,cc <cube+0x84>
+  c8:	00008067          	ret
+  cc:	40a00533          	neg	a0,a0
+  d0:	00008067          	ret
 
 Disassembly of section .text.startup:
 
-0000010c <main>:
- 10c:	27bdffe8 	addiu	sp,sp,-24
- 110:	3c190000 	lui	t9,0x0
- 114:	0000c025 	move	t8,zero
- 118:	afbf0014 	sw	ra,20(sp)
- 11c:	240d0064 	li	t5,100
- 120:	27390238 	addiu	t9,t9,568
- 124:	240f01f4 	li	t7,500
- 128:	01a01025 	move	v0,t5
- 12c:	00002025 	move	a0,zero
- 130:	2442ff9c 	addiu	v0,v0,-100
- 134:	28430064 	slti	v1,v0,100
- 138:	24840001 	addiu	a0,a0,1
- 13c:	1060fffc 	beqz	v1,130 <main+0x24>
- 140:	00000000 	nop
- 144:	01a01025 	move	v0,t5
- 148:	00005825 	move	t3,zero
- 14c:	2442fff6 	addiu	v0,v0,-10
- 150:	2843000a 	slti	v1,v0,10
- 154:	256b0001 	addiu	t3,t3,1
- 158:	1060fffc 	beqz	v1,14c <main+0x40>
- 15c:	00000000 	nop
- 160:	2962000a 	slti	v0,t3,10
- 164:	14400005 	bnez	v0,17c <main+0x70>
- 168:	00000000 	nop
- 16c:	256bfff6 	addiu	t3,t3,-10
- 170:	2962000a 	slti	v0,t3,10
- 174:	1040fffd 	beqz	v0,16c <main+0x60>
- 178:	00000000 	nop
- 17c:	01a06025 	move	t4,t5
- 180:	258cfff6 	addiu	t4,t4,-10
- 184:	2982000a 	slti	v0,t4,10
- 188:	1040fffd 	beqz	v0,180 <main+0x74>
- 18c:	00000000 	nop
- 190:	0c000019 	jal	64 <cube>
- 194:	00000000 	nop
- 198:	01602025 	move	a0,t3
- 19c:	00407025 	move	t6,v0
- 1a0:	0c000019 	jal	64 <cube>
- 1a4:	00000000 	nop
- 1a8:	01802025 	move	a0,t4
- 1ac:	01c27021 	addu	t6,t6,v0
- 1b0:	0c000019 	jal	64 <cube>
- 1b4:	00000000 	nop
- 1b8:	01c21021 	addu	v0,t6,v0
- 1bc:	104d000d 	beq	v0,t5,1f4 <main+0xe8>
- 1c0:	00000000 	nop
- 1c4:	25ad0001 	addiu	t5,t5,1
- 1c8:	15afffd7 	bne	t5,t7,128 <main+0x1c>
- 1cc:	00000000 	nop
- 1d0:	3b040004 	xori	a0,t8,0x4
- 1d4:	2c840001 	sltiu	a0,a0,1
- 1d8:	0c00000c 	jal	30 <nemu_assert>
- 1dc:	00000000 	nop
- 1e0:	8fbf0014 	lw	ra,20(sp)
- 1e4:	00001025 	move	v0,zero
- 1e8:	27bd0018 	addiu	sp,sp,24
- 1ec:	03e00008 	jr	ra
- 1f0:	00000000 	nop
- 1f4:	00181080 	sll	v0,t8,0x2
- 1f8:	00591021 	addu	v0,v0,t9
- 1fc:	8c440000 	lw	a0,0(v0)
- 200:	27180001 	addiu	t8,t8,1
- 204:	008d2026 	xor	a0,a0,t5
- 208:	2c840001 	sltiu	a0,a0,1
- 20c:	0c00000c 	jal	30 <nemu_assert>
- 210:	00000000 	nop
- 214:	1000ffeb 	b	1c4 <main+0xb8>
- 218:	00000000 	nop
-
-Disassembly of section .MIPS.abiflags:
-
-00000220 <.MIPS.abiflags>:
- 220:	01200000 	0x1200000
- 224:	01000101 	0x1000101
-	...
- 230:	00000001 	movf	zero,zero,$fcc0
- 234:	00000000 	nop
+000000d4 <main>:
+  d4:	fd010113          	addi	sp,sp,-48 # 3fd0 <ans+0x3dec>
+  d8:	01712623          	sw	s7,12(sp)
+  dc:	03212023          	sw	s2,32(sp)
+  e0:	01312e23          	sw	s3,28(sp)
+  e4:	01412c23          	sw	s4,24(sp)
+  e8:	01512a23          	sw	s5,20(sp)
+  ec:	01612823          	sw	s6,16(sp)
+  f0:	02112623          	sw	ra,44(sp)
+  f4:	02812423          	sw	s0,40(sp)
+  f8:	02912223          	sw	s1,36(sp)
+  fc:	01812423          	sw	s8,8(sp)
+ 100:	00000b13          	li	s6,0
+ 104:	06400a13          	li	s4,100
+ 108:	06300993          	li	s3,99
+ 10c:	00900913          	li	s2,9
+ 110:	1e400b93          	li	s7,484
+ 114:	1f400a93          	li	s5,500
+ 118:	000a0793          	mv	a5,s4
+ 11c:	00000513          	li	a0,0
+ 120:	f9c78793          	addi	a5,a5,-100
+ 124:	00150513          	addi	a0,a0,1
+ 128:	fef9cce3          	blt	s3,a5,120 <main+0x4c>
+ 12c:	000a0793          	mv	a5,s4
+ 130:	00000413          	li	s0,0
+ 134:	ff678793          	addi	a5,a5,-10
+ 138:	00140413          	addi	s0,s0,1
+ 13c:	fef94ce3          	blt	s2,a5,134 <main+0x60>
+ 140:	00895663          	bge	s2,s0,14c <main+0x78>
+ 144:	ff640413          	addi	s0,s0,-10
+ 148:	fe894ee3          	blt	s2,s0,144 <main+0x70>
+ 14c:	000a0493          	mv	s1,s4
+ 150:	ff648493          	addi	s1,s1,-10
+ 154:	fe994ee3          	blt	s2,s1,150 <main+0x7c>
+ 158:	ef1ff0ef          	jal	ra,48 <cube>
+ 15c:	00050c13          	mv	s8,a0
+ 160:	00040513          	mv	a0,s0
+ 164:	ee5ff0ef          	jal	ra,48 <cube>
+ 168:	00ac0c33          	add	s8,s8,a0
+ 16c:	00048513          	mv	a0,s1
+ 170:	ed9ff0ef          	jal	ra,48 <cube>
+ 174:	00ac0533          	add	a0,s8,a0
+ 178:	05450663          	beq	a0,s4,1c4 <main+0xf0>
+ 17c:	001a0a13          	addi	s4,s4,1
+ 180:	f95a1ce3          	bne	s4,s5,118 <main+0x44>
+ 184:	ffcb0513          	addi	a0,s6,-4
+ 188:	00153513          	seqz	a0,a0
+ 18c:	e99ff0ef          	jal	ra,24 <nemu_assert>
+ 190:	02c12083          	lw	ra,44(sp)
+ 194:	02812403          	lw	s0,40(sp)
+ 198:	02412483          	lw	s1,36(sp)
+ 19c:	02012903          	lw	s2,32(sp)
+ 1a0:	01c12983          	lw	s3,28(sp)
+ 1a4:	01812a03          	lw	s4,24(sp)
+ 1a8:	01412a83          	lw	s5,20(sp)
+ 1ac:	01012b03          	lw	s6,16(sp)
+ 1b0:	00c12b83          	lw	s7,12(sp)
+ 1b4:	00812c03          	lw	s8,8(sp)
+ 1b8:	00000513          	li	a0,0
+ 1bc:	03010113          	addi	sp,sp,48
+ 1c0:	00008067          	ret
+ 1c4:	002b1793          	slli	a5,s6,0x2
+ 1c8:	00fb87b3          	add	a5,s7,a5
+ 1cc:	0007a503          	lw	a0,0(a5)
+ 1d0:	001b0b13          	addi	s6,s6,1
+ 1d4:	41450533          	sub	a0,a0,s4
+ 1d8:	00153513          	seqz	a0,a0
+ 1dc:	e49ff0ef          	jal	ra,24 <nemu_assert>
+ 1e0:	f9dff06f          	j	17c <main+0xa8>
 
 Disassembly of section .data:
 
-00000238 <ans>:
- 238:	00000099 	0x99
- 23c:	00000172 	tlt	zero,zero,0x5
- 240:	00000173 	tltu	zero,zero,0x5
- 244:	00000197 	0x197
-
-Disassembly of section .reginfo:
-
-00000000 <.reginfo>:
-   0:	a0000000 	sb	zero,0(zero)
-	...
-
-Disassembly of section .pdr:
-
-00000000 <.pdr>:
-   0:	00000020 	add	zero,zero,zero
-	...
-  18:	0000001d 	0x1d
-  1c:	0000001f 	0x1f
-  20:	00000030 	tge	zero,zero
-	...
-  38:	0000001d 	0x1d
-  3c:	0000001f 	0x1f
-  40:	00000054 	0x54
-	...
-  58:	0000001d 	0x1d
-  5c:	0000001f 	0x1f
-  60:	00000064 	0x64
-	...
-  78:	0000001d 	0x1d
-  7c:	0000001f 	0x1f
-  80:	0000010c 	syscall	0x4
-  84:	80000000 	lb	zero,0(zero)
-  88:	fffffffc 	sdc3	$31,-4(ra)
-	...
-  94:	00000018 	mult	zero,zero
-  98:	0000001d 	0x1d
-  9c:	0000001f 	0x1f
-
-Disassembly of section .gnu.attributes:
-
-00000000 <.gnu.attributes>:
-   0:	00000f41 	0xf41
-   4:	756e6700 	jalx	5b99c00 <ans+0x5b999c8>
-   8:	00070100 	sll	zero,a3,0x4
-   c:	01040000 	0x1040000
+000001e4 <ans>:
+ 1e4:	0099                	addi	ra,ra,6
+ 1e6:	0000                	unimp
+ 1e8:	0172                	slli	sp,sp,0x1c
+ 1ea:	0000                	unimp
+ 1ec:	00000173          	0x173
+ 1f0:	00000197          	auipc	gp,0x0
 
 Disassembly of section .comment:
 
 00000000 <.comment>:
-   0:	3a434347 	xori	v1,s2,0x4347
-   4:	4e472820 	c3	0x472820
-   8:	36202955 	ori	zero,s1,0x2955
-   c:	302e322e 	andi	t6,at,0x322e
+   0:	3a434347          	fmsub.d	ft6,ft6,ft4,ft7,rmm
+   4:	2820                	fld	fs0,80(s0)
+   6:	29554e47          	fmsub.s	ft8,fa0,fs5,ft5,rmm
+   a:	3820                	fld	fs0,112(s0)
+   c:	322e                	fld	ft4,232(sp)
+   e:	302e                	fld	ft0,232(sp)
 	...

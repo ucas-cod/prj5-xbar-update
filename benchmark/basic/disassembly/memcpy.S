@@ -1,60 +1,54 @@
 
-/home/changyisong/ucas-cod/prj3-teacher/benchmark/basic/bin/memcpy:     file format elf32-littlemips
+/home/changyisong/ucas-cod/prj5-riscv-cpu-teacher/benchmark/basic/bin/memcpy:     file format elf32-littleriscv
 
 
 Disassembly of section .text:
 
 00000000 <start>:
-   0:	241a0001 	li	k0,1
-   4:	17400002 	bnez	k0,10 <real_start>
-   8:	00000000 	nop
+   0:	00100293          	li	t0,1
+   4:	00029663          	bnez	t0,10 <real_start>
+   8:	00000013          	nop
 
 0000000c <global_result>:
-   c:	ffffffff 	sdc3	$31,-1(ra)
+   c:	ffff                	0xffff
+   e:	ffff                	0xffff
 
 00000010 <real_start>:
-  10:	24040000 	li	a0,0
-  14:	24050064 	li	a1,100
+  10:	00000513          	li	a0,0
+  14:	06400593          	li	a1,100
 
 00000018 <loop1>:
-  18:	ac8400c8 	sw	a0,200(a0)
-  1c:	24840004 	addiu	a0,a0,4
-  20:	1485fffd 	bne	a0,a1,18 <loop1>
-  24:	00000000 	nop
-  28:	24040000 	li	a0,0
+  18:	0ca52423          	sw	a0,200(a0)
+  1c:	00450513          	addi	a0,a0,4
+  20:	feb51ce3          	bne	a0,a1,18 <loop1>
+  24:	00000513          	li	a0,0
 
-0000002c <loop2>:
-  2c:	8c8600c8 	lw	a2,200(a0)
-  30:	ac86012c 	sw	a2,300(a0)
-  34:	24840004 	addiu	a0,a0,4
-  38:	1485fffc 	bne	a0,a1,2c <loop2>
-  3c:	00000000 	nop
-  40:	24040000 	li	a0,0
+00000028 <loop2>:
+  28:	0c852603          	lw	a2,200(a0)
+  2c:	12c52623          	sw	a2,300(a0)
+  30:	00450513          	addi	a0,a0,4
+  34:	feb51ae3          	bne	a0,a1,28 <loop2>
+  38:	00000513          	li	a0,0
 
-00000044 <check>:
-  44:	8c86012c 	lw	a2,300(a0)
-  48:	14c40007 	bne	a2,a0,68 <bad_trap>
-  4c:	00000000 	nop
-  50:	24840004 	addiu	a0,a0,4
-  54:	1485fffb 	bne	a0,a1,44 <check>
-  58:	00000000 	nop
-  5c:	241a0001 	li	k0,1
-  60:	17400005 	bnez	k0,78 <good_trap>
-  64:	00000000 	nop
+0000003c <check>:
+  3c:	12c52603          	lw	a2,300(a0)
+  40:	00a61a63          	bne	a2,a0,54 <bad_trap>
+  44:	00450513          	addi	a0,a0,4
+  48:	feb51ae3          	bne	a0,a1,3c <check>
+  4c:	00100293          	li	t0,1
+  50:	00029863          	bnez	t0,60 <good_trap>
 
-00000068 <bad_trap>:
-  68:	24040001 	li	a0,1
-  6c:	241a0001 	li	k0,1
-  70:	17400002 	bnez	k0,7c <exit>
-  74:	00000000 	nop
+00000054 <bad_trap>:
+  54:	00100513          	li	a0,1
+  58:	00100293          	li	t0,1
+  5c:	00029463          	bnez	t0,64 <exit>
 
-00000078 <good_trap>:
-  78:	24040000 	li	a0,0
+00000060 <good_trap>:
+  60:	00000513          	li	a0,0
 
-0000007c <exit>:
-  7c:	ac04000c 	sw	a0,12(zero)
+00000064 <exit>:
+  64:	00a02623          	sw	a0,12(zero) # c <global_result>
 
-00000080 <spin>:
-  80:	241a0001 	li	k0,1
-  84:	1740fffe 	bnez	k0,80 <spin>
-  88:	00000000 	nop
+00000068 <spin>:
+  68:	00100293          	li	t0,1
+  6c:	fe029ee3          	bnez	t0,68 <spin>

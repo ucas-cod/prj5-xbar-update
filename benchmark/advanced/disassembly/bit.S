@@ -1,263 +1,173 @@
 
-/home/changyisong/ucas-cod/prj3-teacher-cyx/benchmark/advanced/bin/bit:     file format elf32-littlemips
+/home/changyisong/ucas-cod/prj5-riscv-cpu-teacher/benchmark/advanced/bin/bit:     file format elf32-littleriscv
 
 
 Disassembly of section .text:
 
 00000000 <start>:
-   0:	241d4000 	li	sp,16384
-   4:	08000004 	j	10 <continued>
-   8:	00000000 	nop
+   0:	00004137          	lui	sp,0x4
+   4:	00c0006f          	j	10 <continued>
+   8:	00000013          	nop
 
 0000000c <global_result>:
-   c:	ffffffff 	sdc3	$31,-1(ra)
+   c:	ffff                	0xffff
+   e:	ffff                	0xffff
 
 00000010 <continued>:
-  10:	0c00003c 	jal	f0 <main>
-  14:	00000000 	nop
-  18:	0c000015 	jal	54 <hit_good_trap>
-  1c:	00000000 	nop
+  10:	0b0000ef          	jal	ra,c0 <main>
+  14:	028000ef          	jal	ra,3c <hit_good_trap>
 
-00000020 <_halt>:
-  20:	3c020000 	lui	v0,0x0
-  24:	ac44000c 	sw	a0,12(v0)
-  28:	1000ffff 	b	28 <_halt+0x8>
-  2c:	00000000 	nop
+00000018 <_halt>:
+  18:	000007b7          	lui	a5,0x0
+  1c:	00a7a623          	sw	a0,12(a5) # c <global_result>
+  20:	0000006f          	j	20 <_halt+0x8>
 
-00000030 <nemu_assert>:
-  30:	14800006 	bnez	a0,4c <nemu_assert+0x1c>
-  34:	00000000 	nop
-  38:	24030001 	li	v1,1
-  3c:	3c020000 	lui	v0,0x0
-  40:	ac43000c 	sw	v1,12(v0)
-  44:	1000ffff 	b	44 <nemu_assert+0x14>
-  48:	00000000 	nop
-  4c:	03e00008 	jr	ra
-  50:	00000000 	nop
+00000024 <nemu_assert>:
+  24:	00051a63          	bnez	a0,38 <nemu_assert+0x14>
+  28:	000007b7          	lui	a5,0x0
+  2c:	00100713          	li	a4,1
+  30:	00e7a623          	sw	a4,12(a5) # c <global_result>
+  34:	0000006f          	j	34 <nemu_assert+0x10>
+  38:	00008067          	ret
 
-00000054 <hit_good_trap>:
-  54:	3c020000 	lui	v0,0x0
-  58:	ac40000c 	sw	zero,12(v0)
-  5c:	1000ffff 	b	5c <hit_good_trap+0x8>
-  60:	00000000 	nop
+0000003c <hit_good_trap>:
+  3c:	000007b7          	lui	a5,0x0
+  40:	0007a623          	sw	zero,12(a5) # c <global_result>
+  44:	0000006f          	j	44 <hit_good_trap+0x8>
 
-00000064 <getbit>:
-  64:	000510c3 	sra	v0,a1,0x3
-  68:	00822021 	addu	a0,a0,v0
-  6c:	30a50007 	andi	a1,a1,0x7
-  70:	90830000 	lbu	v1,0(a0)
-  74:	24020001 	li	v0,1
-  78:	00a21004 	sllv	v0,v0,a1
-  7c:	00431024 	and	v0,v0,v1
-  80:	0002102b 	sltu	v0,zero,v0
-  84:	03e00008 	jr	ra
-  88:	00000000 	nop
+00000048 <getbit>:
+  48:	4035d793          	srai	a5,a1,0x3
+  4c:	00f50533          	add	a0,a0,a5
+  50:	00054503          	lbu	a0,0(a0)
+  54:	0075f593          	andi	a1,a1,7
+  58:	00b55533          	srl	a0,a0,a1
+  5c:	00157513          	andi	a0,a0,1
+  60:	00008067          	ret
 
-0000008c <setbit>:
-  8c:	000510c3 	sra	v0,a1,0x3
-  90:	27bdfff8 	addiu	sp,sp,-8
-  94:	00822021 	addu	a0,a0,v0
-  98:	30a20007 	andi	v0,a1,0x7
-  9c:	afa40000 	sw	a0,0(sp)
-  a0:	24050001 	li	a1,1
-  a4:	00452804 	sllv	a1,a1,v0
-  a8:	8fa20000 	lw	v0,0(sp)
-  ac:	8fa30000 	lw	v1,0(sp)
-  b0:	10c00008 	beqz	a2,d4 <setbit+0x48>
-  b4:	00000000 	nop
-  b8:	90630000 	lbu	v1,0(v1)
-  bc:	00a32825 	or	a1,a1,v1
-  c0:	30a500ff 	andi	a1,a1,0xff
-  c4:	a0450000 	sb	a1,0(v0)
-  c8:	27bd0008 	addiu	sp,sp,8
-  cc:	03e00008 	jr	ra
-  d0:	00000000 	nop
-  d4:	90630000 	lbu	v1,0(v1)
-  d8:	00052827 	nor	a1,zero,a1
-  dc:	00a32824 	and	a1,a1,v1
-  e0:	a0450000 	sb	a1,0(v0)
-  e4:	27bd0008 	addiu	sp,sp,8
-  e8:	03e00008 	jr	ra
-  ec:	00000000 	nop
+00000064 <setbit>:
+  64:	4035d793          	srai	a5,a1,0x3
+  68:	ff010113          	addi	sp,sp,-16 # 3ff0 <main+0x3f30>
+  6c:	00f50533          	add	a0,a0,a5
+  70:	00a12623          	sw	a0,12(sp)
+  74:	0075f793          	andi	a5,a1,7
+  78:	00100593          	li	a1,1
+  7c:	00f595b3          	sll	a1,a1,a5
+  80:	00c12783          	lw	a5,12(sp)
+  84:	02061063          	bnez	a2,a4 <setbit+0x40>
+  88:	0007c783          	lbu	a5,0(a5)
+  8c:	fff5c593          	not	a1,a1
+  90:	00f5f5b3          	and	a1,a1,a5
+  94:	00c12783          	lw	a5,12(sp)
+  98:	00b78023          	sb	a1,0(a5)
+  9c:	01010113          	addi	sp,sp,16
+  a0:	00008067          	ret
+  a4:	0007c783          	lbu	a5,0(a5)
+  a8:	00f5e5b3          	or	a1,a1,a5
+  ac:	00c12783          	lw	a5,12(sp)
+  b0:	0ff5f593          	andi	a1,a1,255
+  b4:	00b78023          	sb	a1,0(a5)
+  b8:	01010113          	addi	sp,sp,16
+  bc:	00008067          	ret
 
 Disassembly of section .text.startup:
 
-000000f0 <main>:
-  f0:	27bdffe0 	addiu	sp,sp,-32
-  f4:	27a40010 	addiu	a0,sp,16
-  f8:	00002825 	move	a1,zero
-  fc:	2402ffaa 	li	v0,-86
- 100:	afbf001c 	sw	ra,28(sp)
- 104:	a3a20010 	sb	v0,16(sp)
- 108:	0c000019 	jal	64 <getbit>
- 10c:	00000000 	nop
- 110:	2c440001 	sltiu	a0,v0,1
- 114:	0c00000c 	jal	30 <nemu_assert>
- 118:	00000000 	nop
- 11c:	27a40010 	addiu	a0,sp,16
- 120:	24050001 	li	a1,1
- 124:	0c000019 	jal	64 <getbit>
- 128:	00000000 	nop
- 12c:	38420001 	xori	v0,v0,0x1
- 130:	2c440001 	sltiu	a0,v0,1
- 134:	0c00000c 	jal	30 <nemu_assert>
- 138:	00000000 	nop
- 13c:	27a40010 	addiu	a0,sp,16
- 140:	24050002 	li	a1,2
- 144:	0c000019 	jal	64 <getbit>
- 148:	00000000 	nop
- 14c:	2c440001 	sltiu	a0,v0,1
- 150:	0c00000c 	jal	30 <nemu_assert>
- 154:	00000000 	nop
- 158:	27a40010 	addiu	a0,sp,16
- 15c:	24050003 	li	a1,3
- 160:	0c000019 	jal	64 <getbit>
- 164:	00000000 	nop
- 168:	38420001 	xori	v0,v0,0x1
- 16c:	2c440001 	sltiu	a0,v0,1
- 170:	0c00000c 	jal	30 <nemu_assert>
- 174:	00000000 	nop
- 178:	27a40010 	addiu	a0,sp,16
- 17c:	24050004 	li	a1,4
- 180:	0c000019 	jal	64 <getbit>
- 184:	00000000 	nop
- 188:	2c440001 	sltiu	a0,v0,1
- 18c:	0c00000c 	jal	30 <nemu_assert>
- 190:	00000000 	nop
- 194:	27a40010 	addiu	a0,sp,16
- 198:	24050005 	li	a1,5
- 19c:	0c000019 	jal	64 <getbit>
- 1a0:	00000000 	nop
- 1a4:	38420001 	xori	v0,v0,0x1
- 1a8:	2c440001 	sltiu	a0,v0,1
- 1ac:	0c00000c 	jal	30 <nemu_assert>
- 1b0:	00000000 	nop
- 1b4:	27a40010 	addiu	a0,sp,16
- 1b8:	24050006 	li	a1,6
- 1bc:	0c000019 	jal	64 <getbit>
- 1c0:	00000000 	nop
- 1c4:	2c440001 	sltiu	a0,v0,1
- 1c8:	0c00000c 	jal	30 <nemu_assert>
- 1cc:	00000000 	nop
- 1d0:	27a40010 	addiu	a0,sp,16
- 1d4:	24050007 	li	a1,7
- 1d8:	0c000019 	jal	64 <getbit>
- 1dc:	00000000 	nop
- 1e0:	38420001 	xori	v0,v0,0x1
- 1e4:	2c440001 	sltiu	a0,v0,1
- 1e8:	0c00000c 	jal	30 <nemu_assert>
- 1ec:	00000000 	nop
- 1f0:	27a40010 	addiu	a0,sp,16
- 1f4:	24060001 	li	a2,1
- 1f8:	24050008 	li	a1,8
- 1fc:	0c000023 	jal	8c <setbit>
- 200:	00000000 	nop
- 204:	27a40010 	addiu	a0,sp,16
- 208:	00003025 	move	a2,zero
- 20c:	24050009 	li	a1,9
- 210:	0c000023 	jal	8c <setbit>
- 214:	00000000 	nop
- 218:	27a40010 	addiu	a0,sp,16
- 21c:	24060001 	li	a2,1
- 220:	2405000a 	li	a1,10
- 224:	0c000023 	jal	8c <setbit>
- 228:	00000000 	nop
- 22c:	27a40010 	addiu	a0,sp,16
- 230:	00003025 	move	a2,zero
- 234:	2405000b 	li	a1,11
- 238:	0c000023 	jal	8c <setbit>
- 23c:	00000000 	nop
- 240:	27a40010 	addiu	a0,sp,16
- 244:	24060001 	li	a2,1
- 248:	2405000c 	li	a1,12
- 24c:	0c000023 	jal	8c <setbit>
- 250:	00000000 	nop
- 254:	27a40010 	addiu	a0,sp,16
- 258:	00003025 	move	a2,zero
- 25c:	2405000d 	li	a1,13
- 260:	0c000023 	jal	8c <setbit>
- 264:	00000000 	nop
- 268:	27a40010 	addiu	a0,sp,16
- 26c:	24060001 	li	a2,1
- 270:	2405000e 	li	a1,14
- 274:	0c000023 	jal	8c <setbit>
- 278:	00000000 	nop
- 27c:	27a40010 	addiu	a0,sp,16
- 280:	00003025 	move	a2,zero
- 284:	2405000f 	li	a1,15
- 288:	0c000023 	jal	8c <setbit>
- 28c:	00000000 	nop
- 290:	93a40011 	lbu	a0,17(sp)
- 294:	38840055 	xori	a0,a0,0x55
- 298:	2c840001 	sltiu	a0,a0,1
- 29c:	0c00000c 	jal	30 <nemu_assert>
- 2a0:	00000000 	nop
- 2a4:	8fbf001c 	lw	ra,28(sp)
- 2a8:	00001025 	move	v0,zero
- 2ac:	27bd0020 	addiu	sp,sp,32
- 2b0:	03e00008 	jr	ra
- 2b4:	00000000 	nop
-
-Disassembly of section .MIPS.abiflags:
-
-000002b8 <.MIPS.abiflags>:
- 2b8:	01200000 	0x1200000
- 2bc:	01000101 	0x1000101
-	...
- 2c8:	00000001 	movf	zero,zero,$fcc0
- 2cc:	00000000 	nop
-
-Disassembly of section .reginfo:
-
-00000000 <.reginfo>:
-   0:	a0000000 	sb	zero,0(zero)
-	...
-
-Disassembly of section .pdr:
-
-00000000 <.pdr>:
-   0:	00000020 	add	zero,zero,zero
-	...
-  18:	0000001d 	0x1d
-  1c:	0000001f 	0x1f
-  20:	00000030 	tge	zero,zero
-	...
-  38:	0000001d 	0x1d
-  3c:	0000001f 	0x1f
-  40:	00000054 	0x54
-	...
-  58:	0000001d 	0x1d
-  5c:	0000001f 	0x1f
-  60:	00000064 	0x64
-	...
-  78:	0000001d 	0x1d
-  7c:	0000001f 	0x1f
-  80:	0000008c 	syscall	0x2
-	...
-  94:	00000008 	jr	zero
-  98:	0000001d 	0x1d
-  9c:	0000001f 	0x1f
-  a0:	000000f0 	tge	zero,zero,0x3
-  a4:	80000000 	lb	zero,0(zero)
-  a8:	fffffffc 	sdc3	$31,-4(ra)
-	...
-  b4:	00000020 	add	zero,zero,zero
-  b8:	0000001d 	0x1d
-  bc:	0000001f 	0x1f
-
-Disassembly of section .gnu.attributes:
-
-00000000 <.gnu.attributes>:
-   0:	00000f41 	0xf41
-   4:	756e6700 	jalx	5b99c00 <main+0x5b99b10>
-   8:	00070100 	sll	zero,a3,0x4
-   c:	01040000 	0x1040000
+000000c0 <main>:
+  c0:	fe010113          	addi	sp,sp,-32
+  c4:	faa00793          	li	a5,-86
+  c8:	00000593          	li	a1,0
+  cc:	00c10513          	addi	a0,sp,12
+  d0:	00112e23          	sw	ra,28(sp)
+  d4:	00f10623          	sb	a5,12(sp)
+  d8:	f71ff0ef          	jal	ra,48 <getbit>
+  dc:	00153513          	seqz	a0,a0
+  e0:	f45ff0ef          	jal	ra,24 <nemu_assert>
+  e4:	00100593          	li	a1,1
+  e8:	00c10513          	addi	a0,sp,12
+  ec:	f5dff0ef          	jal	ra,48 <getbit>
+  f0:	fff50513          	addi	a0,a0,-1
+  f4:	00153513          	seqz	a0,a0
+  f8:	f2dff0ef          	jal	ra,24 <nemu_assert>
+  fc:	00200593          	li	a1,2
+ 100:	00c10513          	addi	a0,sp,12
+ 104:	f45ff0ef          	jal	ra,48 <getbit>
+ 108:	00153513          	seqz	a0,a0
+ 10c:	f19ff0ef          	jal	ra,24 <nemu_assert>
+ 110:	00300593          	li	a1,3
+ 114:	00c10513          	addi	a0,sp,12
+ 118:	f31ff0ef          	jal	ra,48 <getbit>
+ 11c:	fff50513          	addi	a0,a0,-1
+ 120:	00153513          	seqz	a0,a0
+ 124:	f01ff0ef          	jal	ra,24 <nemu_assert>
+ 128:	00400593          	li	a1,4
+ 12c:	00c10513          	addi	a0,sp,12
+ 130:	f19ff0ef          	jal	ra,48 <getbit>
+ 134:	00153513          	seqz	a0,a0
+ 138:	eedff0ef          	jal	ra,24 <nemu_assert>
+ 13c:	00500593          	li	a1,5
+ 140:	00c10513          	addi	a0,sp,12
+ 144:	f05ff0ef          	jal	ra,48 <getbit>
+ 148:	fff50513          	addi	a0,a0,-1
+ 14c:	00153513          	seqz	a0,a0
+ 150:	ed5ff0ef          	jal	ra,24 <nemu_assert>
+ 154:	00600593          	li	a1,6
+ 158:	00c10513          	addi	a0,sp,12
+ 15c:	eedff0ef          	jal	ra,48 <getbit>
+ 160:	00153513          	seqz	a0,a0
+ 164:	ec1ff0ef          	jal	ra,24 <nemu_assert>
+ 168:	00700593          	li	a1,7
+ 16c:	00c10513          	addi	a0,sp,12
+ 170:	ed9ff0ef          	jal	ra,48 <getbit>
+ 174:	fff50513          	addi	a0,a0,-1
+ 178:	00153513          	seqz	a0,a0
+ 17c:	ea9ff0ef          	jal	ra,24 <nemu_assert>
+ 180:	00c10513          	addi	a0,sp,12
+ 184:	00100613          	li	a2,1
+ 188:	00800593          	li	a1,8
+ 18c:	ed9ff0ef          	jal	ra,64 <setbit>
+ 190:	00c10513          	addi	a0,sp,12
+ 194:	00000613          	li	a2,0
+ 198:	00900593          	li	a1,9
+ 19c:	ec9ff0ef          	jal	ra,64 <setbit>
+ 1a0:	00c10513          	addi	a0,sp,12
+ 1a4:	00100613          	li	a2,1
+ 1a8:	00a00593          	li	a1,10
+ 1ac:	eb9ff0ef          	jal	ra,64 <setbit>
+ 1b0:	00c10513          	addi	a0,sp,12
+ 1b4:	00000613          	li	a2,0
+ 1b8:	00b00593          	li	a1,11
+ 1bc:	ea9ff0ef          	jal	ra,64 <setbit>
+ 1c0:	00c10513          	addi	a0,sp,12
+ 1c4:	00100613          	li	a2,1
+ 1c8:	00c00593          	li	a1,12
+ 1cc:	e99ff0ef          	jal	ra,64 <setbit>
+ 1d0:	00c10513          	addi	a0,sp,12
+ 1d4:	00000613          	li	a2,0
+ 1d8:	00d00593          	li	a1,13
+ 1dc:	e89ff0ef          	jal	ra,64 <setbit>
+ 1e0:	00c10513          	addi	a0,sp,12
+ 1e4:	00100613          	li	a2,1
+ 1e8:	00e00593          	li	a1,14
+ 1ec:	e79ff0ef          	jal	ra,64 <setbit>
+ 1f0:	00c10513          	addi	a0,sp,12
+ 1f4:	00000613          	li	a2,0
+ 1f8:	00f00593          	li	a1,15
+ 1fc:	e69ff0ef          	jal	ra,64 <setbit>
+ 200:	00d14503          	lbu	a0,13(sp)
+ 204:	fab50513          	addi	a0,a0,-85
+ 208:	00153513          	seqz	a0,a0
+ 20c:	e19ff0ef          	jal	ra,24 <nemu_assert>
+ 210:	01c12083          	lw	ra,28(sp)
+ 214:	00000513          	li	a0,0
+ 218:	02010113          	addi	sp,sp,32
+ 21c:	00008067          	ret
 
 Disassembly of section .comment:
 
 00000000 <.comment>:
-   0:	3a434347 	xori	v1,s2,0x4347
-   4:	4e472820 	c3	0x472820
-   8:	36202955 	ori	zero,s1,0x2955
-   c:	302e322e 	andi	t6,at,0x322e
+   0:	3a434347          	fmsub.d	ft6,ft6,ft4,ft7,rmm
+   4:	2820                	fld	fs0,80(s0)
+   6:	29554e47          	fmsub.s	ft8,fa0,fs5,ft5,rmm
+   a:	3820                	fld	fs0,112(s0)
+   c:	322e                	fld	ft4,232(sp)
+   e:	302e                	fld	ft0,232(sp)
 	...
